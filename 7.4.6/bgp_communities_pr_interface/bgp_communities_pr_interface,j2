@@ -31,7 +31,7 @@
                 config rule
                     edit {{ client_rule_number }}
                         set match-interface "{{ intf.name }}"
-                        set set-community "700"
+                        set set-community "5656:700"
                     next
                 end
             next
