@@ -1,1 +1,96 @@
+{% set found_mgmt = false %}
+{% set found_client = false %}
+{% set found_student = false %}
+{% set found_iot = false %}
+{% set found_health_z1 = false %}
+{% set found_health_z2 = false %}
+{% set mgmt_rule_number = 100 %}
+{% set client_rule_number = 150 %}
+{% set student_rule_number = 200 %}
+{% set iot_rule_number = 250 %}
+{% set health_z1_rule_number = 300 %}
+{% set health_z2_rule_number = 350 %}
+{% for intf in DEVDB_system_interface %}
+    {% if 'MGMT' in intf.name | upper %}
+        {% set found_mgmt = true %}
+        config router route-map
+            edit "rm-bgp-out-hub"
+                config rule
+                    edit {{ mgmt_rule_number }}
+                        set match-interface "{{ intf.name }}"
+                        set set-community "5656:600"
+                    next
+                end
+            next
+        {% set mgmt_rule_number = mgmt_rule_number + 1 %}
+    {% endif %}
+    {% if 'CLIENT' in intf.name | upper %}
+        {% set found_client = true %}
+        config router route-map
+            edit "rm-bgp-out-hub"
+                config rule
+                    edit {{ client_rule_number }}
+                        set match-interface "{{ intf.name }}"
+                        set set-community "700"
+                    next
+                end
+            next
+        {% set client_rule_number = client_rule_number + 1 %}
+    {% endif %}
+    {% if 'STUDENT' in intf.name | upper %}
+        {% set found_student = true %}
+        config router route-map
+            edit "rm-bgp-out-hub"
+                config rule
+                    edit {{ student_rule_number }}
+                        set match-interface "{{ intf.name }}"
+                        set set-community "5656:900"
+                    next
+                end
+            next
+        {% set student_rule_number = student_rule_number + 1 %}
+    {% endif %}
+    {% if 'IOT' in intf.name | upper %}
+        {% set found_iot = true %}
+        config router route-map
+            edit "rm-bgp-out-hub"
+                config rule
+                    edit {{ iot_rule_number }}
+                        set match-interface "{{ intf.name }}"
+                        set set-community "5656:800"
+                    next
+                end
+            next
+        {% set iot_rule_number = iot_rule_number + 1 %}
+    {% endif %}
+    {% if 'HEALTH-Z1' in intf.name | upper %}
+        {% set found_health_z1 = true %}
+        config router route-map
+            edit "rm-bgp-out-hub"
+                config rule
+                    edit {{ health_z1_rule_number }}
+                        set match-interface "{{ intf.name }}"
+                        set set-community "5656:200"
+                    next
+                end
+            next
+        {% set health_z1_rule_number = health_z1_rule_number + 1 %}
+    {% endif %}
+    {% if 'HEALTH-Z2' in intf.name | upper %}
+        {% set found_health_z2 = true %}
+        config router route-map
+            edit "rm-bgp-out-hub"
+                config rule
+                    edit {{ health_z2_rule_number }}
+                        set match-interface "{{ intf.name }}"
+                        set set-community "5656:201"
+                    next
+                end
+            next
+        {% set health_z2_rule_number = health_z2_rule_number + 1 %}
+    {% endif %}
+{% endfor %}
 
+{% if not found_mgmt and not found_client and not found_student and not found_iot and not found_health_z1 and not found_health_z2 %}
+# No matching interfaces found on this device. No route-map configuration applied.
+{% endif %}
