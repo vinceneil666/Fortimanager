@@ -1,3 +1,13 @@
 This jinja script runs on the fortimanager towards specified devices.
+There are several things hardcoded that can be turend into metadata variables if needed
 
+Routemap name:
+rm-bgp-out-hub
+This is set to a generic name, and reflects the routemap that is attached to the BGP peer config.
+
+client, student, iot etc are references to names within the interface name, and is used for matching.
+
+The scripts itirates over the global fortimanager vaiable DEVDB, DEVDB_system_interface
+
+Community names are for example, dummy values - change as needed.
 
