@@ -1,4 +1,4 @@
-This script is designed to generate route-map configurations based on interfaces found in a system database. It processes a list of system interfaces and generates configuration blocks for specific interface groups. Each group corresponds to a different community and rule number, with the ability to process multiple interfaces from each group.
+***This script is designed to generate route-map configurations based on interfaces found in a system database. It processes a list of system interfaces and generates configuration blocks for specific interface groups. Each group corresponds to a different community and rule number, with the ability to process multiple interfaces from each group.***
 
 The script works with interfaces categorized by keywords like MGMT, CLIENT, STUDENT, IOT, HEALTH-Z1, and HEALTH-Z2. Based on these keywords, it creates a route-map configuration and increments rule numbers for each interface in the group.
 
