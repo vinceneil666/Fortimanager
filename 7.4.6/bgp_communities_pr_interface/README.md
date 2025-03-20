@@ -2,6 +2,7 @@ This script is designed to generate route-map configurations based on interfaces
 
 The script works with interfaces categorized by keywords like MGMT, CLIENT, STUDENT, IOT, HEALTH-Z1, and HEALTH-Z2. Based on these keywords, it creates a route-map configuration and increments rule numbers for each interface in the group.
 
+
 Features
 Automatically processes interfaces based on predefined keywords in the interface name.
 Generates route-map configurations for:
@@ -12,6 +13,7 @@ IOT (Community: 5656:800)
 HEALTH-Z1 (Community: 5656:200)
 HEALTH-Z2 (Community: 5656:201)
 Incrementing rule numbers for each matching interface within a group.
+
 
 How it Works
 The script loops through a list of system interfaces (DEVDB_system_interface).
@@ -34,6 +36,9 @@ IOT interfaces: Community 5656:800, starting rule number 250.
 HEALTH-Z1 interfaces: Community 5656:200, starting rule number 300.
 HEALTH-Z2 interfaces: Community 5656:201, starting rule number 350.
 For each new interface found in a group, the rule number increments by 1. For example, if two MGMT interfaces are found, the first will use rule number 100 and the second 101.
+
+
+
 
 Example Output
 For example, if the system contains the following interfaces:
