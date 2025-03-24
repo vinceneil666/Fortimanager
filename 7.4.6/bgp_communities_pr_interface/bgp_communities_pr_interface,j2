@@ -4,91 +4,104 @@
 {% set found_iot = false %}
 {% set found_health_z1 = false %}
 {% set found_health_z2 = false %}
-{% set mgmt_rule_number = 100 %}
-{% set client_rule_number = 150 %}
-{% set student_rule_number = 200 %}
-{% set iot_rule_number = 250 %}
-{% set health_z1_rule_number = 300 %}
-{% set health_z2_rule_number = 350 %}
+{% set mgmt_rule_number = 10 %}
+{% set client_rule_number = 15 %}
+{% set student_rule_number = 20 %}
+{% set iot_rule_number = 25 %}
+{% set health_z1_rule_number = 30 %}
+{% set health_z2_rule_number = 35 %}
+
 {% for intf in DEVDB_system_interface %}
-    {% if 'MGMT' in intf.name | upper %}
+    {# Determine the suffix based on the last character of the interface name.
+       If the last character is one of 1-9, use it; otherwise, the suffix remains empty. #}
+    {% set suffix = '' %}
+    {% if intf.name[-1] in '123456789' %}
+        {% set suffix = intf.name[-1] %}
+    {% endif %}
+    
+    {% if 'CORP-MGMT' in intf.name | upper %}
         {% set found_mgmt = true %}
         config router route-map
             edit "rm-bgp-out-hub"
                 config rule
-                    edit {{ mgmt_rule_number }}
+                    edit {{ mgmt_rule_number|string ~ suffix }}
                         set match-interface "{{ intf.name }}"
-                        set set-community "5656:600"
+                        set set-community "65215:600"
                     next
                 end
             next
         end
         {% set mgmt_rule_number = mgmt_rule_number + 1 %}
     {% endif %}
+    
     {% if 'CLIENT' in intf.name | upper %}
         {% set found_client = true %}
         config router route-map
             edit "rm-bgp-out-hub"
                 config rule
-                    edit {{ client_rule_number }}
+                    edit {{ client_rule_number|string ~ suffix }}
                         set match-interface "{{ intf.name }}"
-                        set set-community "5656:700"
+                        set set-community "65215:700"
                     next
                 end
             next
         end
         {% set client_rule_number = client_rule_number + 1 %}
     {% endif %}
+    
     {% if 'STUDENT' in intf.name | upper %}
         {% set found_student = true %}
         config router route-map
             edit "rm-bgp-out-hub"
                 config rule
-                    edit {{ student_rule_number }}
+                    edit {{ student_rule_number|string ~ suffix }}
                         set match-interface "{{ intf.name }}"
-                        set set-community "5656:900"
+                        set set-community "65215:900"
                     next
                 end
             next
         end
         {% set student_rule_number = student_rule_number + 1 %}
     {% endif %}
+    
     {% if 'IOT' in intf.name | upper %}
         {% set found_iot = true %}
         config router route-map
             edit "rm-bgp-out-hub"
                 config rule
-                    edit {{ iot_rule_number }}
+                    edit {{ iot_rule_number|string ~ suffix }}
                         set match-interface "{{ intf.name }}"
-                        set set-community "5656:800"
+                        set set-community "65215:800"
                     next
                 end
             next
         end
         {% set iot_rule_number = iot_rule_number + 1 %}
     {% endif %}
+    
     {% if 'HEALTH-Z1' in intf.name | upper %}
         {% set found_health_z1 = true %}
         config router route-map
             edit "rm-bgp-out-hub"
                 config rule
-                    edit {{ health_z1_rule_number }}
+                    edit {{ health_z1_rule_number|string ~ suffix }}
                         set match-interface "{{ intf.name }}"
-                        set set-community "5656:200"
+                        set set-community "65215:200"
                     next
                 end
             next
         end
         {% set health_z1_rule_number = health_z1_rule_number + 1 %}
     {% endif %}
+    
     {% if 'HEALTH-Z2' in intf.name | upper %}
         {% set found_health_z2 = true %}
         config router route-map
             edit "rm-bgp-out-hub"
                 config rule
-                    edit {{ health_z2_rule_number }}
+                    edit {{ health_z2_rule_number|string ~ suffix }}
                         set match-interface "{{ intf.name }}"
-                        set set-community "5656:201"
+                        set set-community "65215:201"
                     next
                 end
             next
